@@ -46,15 +46,24 @@
                 echo '</tr>';
             }
             echo '</table><input type="submit" name="vendre" value="Vendre"></form>';
+
+            // Récupère l'argent du user
+            $req = "SELECT user.money FROM `user`, `entite` WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
+            $RequetStatement = $this->_bdd->query($req);
+            while($Tab=$RequetStatement->fetch()){
+                $money = $Tab[0];
+            }
             if(isset($_POST['checkbox'])){
                 foreach($_POST['checkbox'] as $check){
+                    $equipement = new equipement($this->_bdd);
+                    $equipement->setEquipementById($check);
+                    $valeur = $equipement->getValeur($check);
                     $equipements = $entite->removeEquipementByID($check);
-                    //$money += ;
+                    $money += $valeur;
                 }
             }
-            // Argent doit appartenir au user (faire une joiture)
-            /*$req = "UPDATE `entite` SET `user` = $money WHERE id = $idEntite";
-            $RequetStatement = $this->_bdd->query($req);*/
+            $req = "UPDATE `user`, `entite` SET user.money = $money WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
+            $RequetStatement = $this->_bdd->query($req);
 
         }
 

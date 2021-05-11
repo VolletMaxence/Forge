@@ -39,7 +39,7 @@ class Entite {
             //todo retirer un equipement ne doit pas etre une suppression
             //todo la suppression peut etre déjà faite à la fusion
             $req="DELETE FROM `Equipement` WHERE id='".$EquipementID."'";
-            //$this->_bdd->query($req);
+            $this->_bdd->query($req);
         }
     }
 
