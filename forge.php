@@ -65,6 +65,7 @@
             $req = "UPDATE `user`, `entite` SET user.money = $money WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
             $RequetStatement = $this->_bdd->query($req);
 
+            
         }
 
         public function craft(){
