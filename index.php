@@ -19,7 +19,10 @@
         $forge->setForgeById($idMap);
         $entite->changeMap($forge);
         echo $forge->getNomForge().'<br>';
-        $forge->vendre($entite, $idEntite);
+        $nbrEquipement = count($map->getEquipements());        
+        $forge->livraison(10 - $nbrEquipement);
+        //$forge->vendre($entite, $idEntite);
+        $forge->acheter($entite, $idMap, $idEntite);
 
     }else{
         echo 'Je suis une map '.$map->getNom();

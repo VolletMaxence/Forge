@@ -10,27 +10,49 @@
             parent::__construct($bdd);
         }            
 
-        public function acheter(){
-            $req = "SELECT arme.rarete FROM `arme`, `forgeron` WHERE forgeron.arme = arme.idArme AND forgeron.id = 1";
-            $RequetStatement=$this->_bdd->query($req);
-            while($Tab=$RequetStatement->fetch()){
-                $this->_rarete = $Tab[0];
+        public function livraison($nbrEquipement){
+            for($i=0; $i<$nbrEquipement; $i++){
+                $equipement = new Equipement($this->_bdd);
+                $this->addEquipement($equipement->createEquipementAleatoire()); 
             }
-            if($this->_rarete == 'commun'){
-                $this->_valeur = 10;
-            }else if($this->_rarete == 'rare'){
-                $this->_valeur = 100;
-            }else if($this->_rarete == 'legendaire'){
-                $this->_valeur = 1000;
+        }
+
+        public function acheter($entite, $idMap, $idEntite){
+            $req = "SELECT mapequipements.idEquipement, equipement.nom, equipement.valeur FROM `mapequipements`, `equipement` WHERE equipement.id = mapequipements.idEquipement AND `idMap` = $idMap";
+            $RequetStatement = $this->_bdd->query($req);
+            echo '<form method="post"><table>';
+            while($Tab=$RequetStatement->fetch()){
+                echo '<tr>';
+                    echo '<td>'.$Tab[1].'</td>';
+                    echo '<td>'.$Tab[2].'</td>';
+                    echo '<td><input type="radio" name="radio[]" value="'.$Tab[0].'"></td>';
+                echo '</tr>';
+            }
+            echo '</table><input type="submit" name="acheter" value="Acheter"></form>';
+
+            // Récupère l'argent du user
+            $req = "SELECT user.money FROM `user`, `entite` WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
+            $RequetStatement = $this->_bdd->query($req);
+            while($Tab=$RequetStatement->fetch()){
+                $money = $Tab[0];
+            }
+            if(isset($_POST['radio'])){
+                foreach($_POST['radio'] as $checkId){
+                    $equipement = new equipement($this->_bdd);
+                    $equipement->setEquipementById($checkId);
+                    $valeur = $equipement->getValeur($checkId);
+                }
+                if($valeur > $money){
+                    echo "Vous n'avez pas assez d'argent";
+                }else{
+                    $entite->addEquipement($checkId);
+                    $this->removeEquipementById($checkId);
+                    $money -= $valeur;
+                    $req = "UPDATE `user`, `entite` SET user.money = $money WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
+                    $RequetStatement = $this->_bdd->query($req);
+                }
             }
 
-            if($this->_money <= $this->_valeur){
-                echo "Vous n'avez pas assez d'argent";
-            }else{
-                $this->_money -= $this->_valeur;
-                $req = "UPDATE `joueur` SET `money`=".$this->_money." WHERE `id` = 2";
-                $RequetStatement=$this->_bdd->query($req);
-            }
         }
 
         public function vendre($entite, $idEntite){
@@ -54,11 +76,11 @@
                 $money = $Tab[0];
             }
             if(isset($_POST['checkbox'])){
-                foreach($_POST['checkbox'] as $check){
+                foreach($_POST['checkbox'] as $checkId){
                     $equipement = new equipement($this->_bdd);
-                    $equipement->setEquipementById($check);
-                    $valeur = $equipement->getValeur($check);
-                    $equipements = $entite->removeEquipementByID($check);
+                    $equipement->setEquipementById($checkId);
+                    $valeur = $equipement->getValeur($checkId);
+                    $equipements = $entite->removeEquipementByID($checkId);
                     $money += $valeur;
                 }
             }
