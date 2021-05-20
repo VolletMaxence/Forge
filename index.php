@@ -24,7 +24,7 @@
         $forge->vendre($entite, $idEntite);
         //$forge->acheter($entite, $idMap, $idEntite);
 
-    }else if($map->isMarché()){
+    }else if($map->isMarche()){
         $marche = new forge($bdd);
         $marche->setForgeById($idMap);
         $marche->changeMap($forge);

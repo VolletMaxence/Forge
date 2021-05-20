@@ -47,8 +47,8 @@
                 if($valeur > $money){
                     echo "Vous n'avez pas assez d'argent";
                 }else{
-                    $entite->addEquipement($equipement);
-                    $this->removeEquipementById($checkId);
+                    $entite->addItem($equipement);
+                    $this->removeItemByID($checkId);
                     $money -= $valeur;
                     $req = "UPDATE `user`, `entite` SET user.money = $money WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
                     $RequetStatement = $this->_bdd->query($req);
