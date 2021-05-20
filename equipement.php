@@ -51,7 +51,7 @@ class Equipement extends Objet{
     }
 
     public function desequipeEntite($Entite){
-        $sql = "UPDATE `EntiteEquipement` SET `equipe`='0' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
+        $sql = "UPDATE `entiteequipement` SET `equipe`='0' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
         $this->_bdd->query($sql);
         $Entite->removeEquipeBydId($this->_id);
     }
@@ -60,9 +60,9 @@ class Equipement extends Objet{
 
 
         //TODO il faut vérifier qu'il n'y a pas d'autre équipement en cours sinon il faut les retirer
-        $sql = "UPDATE `EntiteEquipement`,`TypeEquipement`,`Equipement` SET `equipe`='0'
+        $sql = "UPDATE `entiteequipement`,`TypeEquipement`,`Equipement` SET `equipe`='0'
         WHERE `idEntite`='1'
-        AND  EntiteEquipement.idEquipement = Equipement.id
+        AND  entiteequipement.idEquipement = Equipement.id
         AND  Equipement.type = TypeEquipement.id
         AND  TypeEquipement.idCategorie = '".$this->_idCategorie."'";
         $this->_bdd->query($sql);
@@ -71,7 +71,7 @@ class Equipement extends Objet{
 
         $Entite->addEquipeById($this->_id);
 
-        $sql = "UPDATE `EntiteEquipement` SET `equipe`='1' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
+        $sql = "UPDATE `entiteequipement` SET `equipe`='1' WHERE `idEntite`='".$Entite->getId()."' AND `idEquipement`='".$this->_id."' ";
         $this->_bdd->query($sql);
     }
 

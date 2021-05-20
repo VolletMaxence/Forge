@@ -18,7 +18,7 @@
         }
 
         public function acheter($entite, $idMap, $idEntite){
-            $req = "SELECT mapequipements.idEquipement, equipement.nom, equipement.valeur FROM `mapequipements`, `equipement` WHERE equipement.id = mapequipements.idEquipement AND `idMap` = $idMap";
+            $req = "SELECT mapequipements.idEquipement, Equipement.nom, Equipement.valeur FROM `mapequipements`, `Equipement` WHERE Equipement.id = mapequipements.idEquipement AND `idMap` = $idMap";
             $RequetStatement = $this->_bdd->query($req);
             ?><form method="post"><table><?php
             while($Tab=$RequetStatement->fetch()){
@@ -58,7 +58,7 @@
         }
 
         public function vendre($entite, $idEntite){
-            $req = "SELECT entiteequipement.idEquipement, equipement.nom, equipement.valeur FROM `entiteequipement`, `equipement` WHERE equipement.id = entiteequipement.idEquipement AND `equipe` != 1 AND `idEntite` = $idEntite";
+            $req = "SELECT entiteequipement.idEquipement, Equipement.nom, Equipement.valeur FROM `entiteequipement`, `Equipement` WHERE Equipement.id = entiteequipement.idEquipement AND `equipe` != 1 AND `idEntite` = $idEntite";
             $RequetStatement = $this->_bdd->query($req);
             $equipements = $entite->getEquipementNonPorte();
             ?><form method="post"><table><?php
@@ -74,7 +74,7 @@
             ?></table><input type="submit" name="vendre" value="Vendre"></form><?php
 
             // Récupère l'argent du user
-            $req = "SELECT user.money FROM `user`, `entite` WHERE user.idPersonnage=entite.id AND entite.id = $idEntite";
+            $req = "SELECT user.money FROM `user`, `Entite` WHERE user.idPersonnage=Entite.id AND Entite.id = $idEntite";
             $RequetStatement = $this->_bdd->query($req);
             while($Tab=$RequetStatement->fetch()){
                 $money = $Tab[0];

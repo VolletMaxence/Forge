@@ -33,7 +33,7 @@ class Entite {
         $idindex = array_search($EquipementID, $this->sacEquipements);
         if($idindex  >= 0){
             unset($this->sacEquipements[ $idindex ]);
-            $req="DELETE FROM `EntiteEquipement` WHERE idEntite='".$this->getId()."' AND idEquipement='".$EquipementID."'";
+            $req="DELETE FROM `entiteequipement` WHERE idEntite='".$this->getId()."' AND idEquipement='".$EquipementID."'";
             //$this->_bdd->query($req);
 
             //todo retirer un equipement ne doit pas etre une suppression
@@ -62,7 +62,7 @@ class Entite {
             return $TabIDRemoved;
 
         }else{
-            $req="INSERT INTO `EntiteEquipement`(`idEntite`, `idEquipement`) VALUES ('".$this->getId()."','".$newEquipement->getId()."')";
+            $req="INSERT INTO `entiteequipement`(`idEntite`, `idEquipement`) VALUES ('".$this->getId()."','".$newEquipement->getId()."')";
             $this->_bdd->query($req);
             array_push($this->sacEquipements,$newEquipement->getId());
             //retourne 0 si ya pas eu de fusion d'équipement
@@ -523,6 +523,7 @@ class Entite {
 
     public function setEntiteById($id){
         $Result = $this->_bdd->query("SELECT * FROM `Entite` WHERE `id`='".$id."' ");
+        
         if($tab = $Result->fetch()){ 
             $this->setEntite($tab["id"],$tab["nom"],$tab["vie"],$tab["degat"],$tab["vieMax"],$tab["lienImage"],$tab["type"],$tab["lvl"]);
             //recherche de sa position
@@ -531,14 +532,14 @@ class Entite {
             $this->map = $map;
 
              //select les equipements déjà présent
-            $req  = "SELECT idEquipement FROM `EntiteEquipement` WHERE idEntite='".$id."'";
+            $req  = "SELECT idEquipement FROM `entiteequipement` WHERE idEntite='".$id."'";
             $Result = $this->_bdd->query($req);
             while($tab=$Result->fetch()){
                 array_push($this->sacEquipements,$tab[0]);
             }
 
             //select les Equipement déjà présent
-            $req  = "SELECT idEquipement,equipe FROM `EntiteEquipement` WHERE idEntite='".$id."' AND equipe='1'";
+            $req  = "SELECT idEquipement,equipe FROM `entiteequipement` WHERE idEntite='".$id."' AND equipe='1'";
             $Result = $this->_bdd->query($req);
             while($tab=$Result->fetch()){
             
