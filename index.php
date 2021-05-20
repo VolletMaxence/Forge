@@ -21,8 +21,18 @@
         echo $forge->getNomForge().'<br>';
         $nbrEquipement = count($map->getEquipements());        
         $forge->livraison(10 - $nbrEquipement);
-        //$forge->vendre($entite, $idEntite);
-        $forge->acheter($entite, $idMap, $idEntite);
+        $forge->vendre($entite, $idEntite);
+        //$forge->acheter($entite, $idMap, $idEntite);
+
+    }else if($map->isMarché()){
+        $marche = new forge($bdd);
+        $marche->setForgeById($idMap);
+        $marche->changeMap($forge);
+        echo $forge->getNomForge().'<br>';
+        $nbrItem = count($map->getItems());        
+        $marche->livraison(10 - $nbrItem);
+        $marche->vendre($entite, $idEntite);
+        //$marche->acheter($entite, $idMap, $idEntite);
 
     }else{
         echo 'Je suis une map '.$map->getNom();

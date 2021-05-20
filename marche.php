@@ -2,7 +2,7 @@
 
     //Faire une liaison entre entite equipement et entiteequipement
 
-    class Forge extends Map{
+    class Marche extends Map{
         /* PRIVATE */
 
         /* METHOD */
@@ -10,15 +10,15 @@
             parent::__construct($bdd);
         }            
 
-        public function livraison($nbrEquipement){
-            for($i=0; $i<$nbrEquipement; $i++){
-                $equipement = new Equipement($this->_bdd);
-                $this->addEquipement($equipement->createEquipementAleatoire()); 
+        public function livraison($nbrItem){
+            for($i=0; $i<$nbrItem; $i++){
+                $item = new Item($this->_bdd);
+                $this->addItem($equipement->createItemAleatoire()); 
             }
         }
 
         public function acheter($entite, $idMap, $idEntite){
-            $req = "SELECT mapequipements.idEquipement, equipement.nom, equipement.valeur FROM `mapequipements`, `equipement` WHERE equipement.id = mapequipements.idEquipement AND `idMap` = $idMap";
+            $req = "SELECT mapitems.idMap, item.nom, item.valeur FROM `mapitems`, `item` WHERE item.id = mapitems.idItem AND `idMap` = $idMap";
             $RequetStatement = $this->_bdd->query($req);
             ?><form method="post"><table><?php
             while($Tab=$RequetStatement->fetch()){
@@ -40,9 +40,9 @@
             }
             if(isset($_POST['radio'])){
                 foreach($_POST['radio'] as $checkId){
-                    $equipement = new equipement($this->_bdd);
-                    $equipement->setEquipementById($checkId);
-                    $valeur = $equipement->getValeur($checkId);
+                    $item = new Item($this->_bdd);
+                    $item->setItemById($checkId);
+                    $valeur = $item->getValeur($checkId);
                 }
                 if($valeur > $money){
                     echo "Vous n'avez pas assez d'argent";
@@ -92,12 +92,12 @@
             $RequetStatement = $this->_bdd->query($req);
 
         }
-        
-        public function getNomForge(){
-            return 'Je suis la forge '.$this->_nom;
+
+        public function getNomMarche(){
+            return 'Je suis le marché '.$this->_nom;
         }
 
-        public function setForgeById($id){
+        public function setMarcheById($id){
             parent::setMapById($id);
         }
     }
