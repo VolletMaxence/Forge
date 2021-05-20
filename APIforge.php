@@ -7,7 +7,7 @@
 //session_start();
 //include "../session.php";
 
-$reponse[0] = 0;
+$reponse[0] = 0; 
 
 //A changer lors de l import dans le projet
 
